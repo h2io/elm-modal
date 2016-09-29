@@ -1,0 +1,49 @@
+[
+  {
+    "name": "H2ioModal",
+    "comment": "\nA Modal UI component written in Elm\n\n# Usage\nH2ioModal exports a component written in The Elm Architecture, so you can easily\nstart using it. It is recommended that you import it exposing `modalModel`,\na default version of it's Model.\n\n## Boilerplate\n\n# Exposed Parts\n@docs Model, modalModel, Msg, update, view\n",
+    "aliases": [
+      {
+        "name": "Model",
+        "comment": "\nH2ioModal's Model is used to set inner content, size  and visibility. See\n`modalModel` for a usage example.\n",
+        "args": [],
+        "type": "{ content : Html.Html H2ioModal.Msg , width : String , height : String , visible : Bool }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Msg",
+        "comment": "\nElm architecture Msg. Besides the generic `Msg` being exposed, `Show` and\n`Close` are directly available for you to use.\n\nThe exposed `Show` is the recommended way of toggling the visibility of the H2ioModal.\n\n    update msg model =\n        case msg of\n            ...\n            Show ->\n                let\n                    modal' =\n                        H2ioModal.update H2ioModal.Show model.modal\n                in\n                    { model | modal = modal' } ! []\n\n    --in your view\n    button [ onClick Show ] [ text \"Show Modal\" ]\n\n\nThe exposed `Close` can be used to manually clean up your model when the H2ioModal closes.\n",
+        "args": [],
+        "cases": [
+          [
+            "Close",
+            []
+          ],
+          [
+            "Show",
+            []
+          ]
+        ]
+      }
+    ],
+    "values": [
+      {
+        "name": "modalModel",
+        "comment": "\nmodalModel is an initial Model that get's exported for easier manipulation. You\ncan see a commented implementation in the example folder. Basically, you import\n`modalModel`, destructure it and add your own elements to it, before setting it\nin the application's Model.\n\n    modalConfig : H2ioModal.Model\n    modalConfig =\n        { modalModel\n            | content = content --`content` has to have a `Html H2ioModal.Msg` type.\n            , width = \"340px\"\n            , height = \"480px\"\n        }\n\n\n    model : Model\n    model =\n        { modal = modalConfig\n        ,  ...\n        }\n",
+        "type": "H2ioModal.Model"
+      },
+      {
+        "name": "update",
+        "comment": "\nUpdate functions for above Msg. Must be added in your own `update`. See\n**Boilerplate** section.\n",
+        "type": "H2ioModal.Msg -> H2ioModal.Model -> H2ioModal.Model"
+      },
+      {
+        "name": "view",
+        "comment": "\nElm architecture view. Use it with Html.App.Map in your application.\n",
+        "type": "H2ioModal.Model -> Html.Html H2ioModal.Msg"
+      }
+    ],
+    "generated-with-elm-version": "0.17.1"
+  }
+]
