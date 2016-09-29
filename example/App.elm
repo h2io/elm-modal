@@ -3,7 +3,7 @@ module App exposing (..)
 import Html exposing (div, button, text, h1, p, Html)
 import Html.Events exposing (onClick)
 import Html.App as App
-import Modal exposing (modalModel)
+import H2ioModal exposing (modalModel)
 
 
 main : Program Never
@@ -22,14 +22,14 @@ subscriptions model =
 
 
 type alias Model =
-    { modal : Modal.Model
+    { modal : H2ioModal.Model
     }
 
 
 type Msg
     = NoOp
     | Show
-    | ModalMsg (Modal.Msg)
+    | H2ioModal (H2ioModal.Msg)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -38,23 +38,23 @@ update msg model =
         NoOp ->
             model ! []
 
-        {--`Show` manually sends `Modal.update` the `Show Msg` so you don't
+        {--`Show` manually sends `H2ioModal.update` the `Show Msg` so you don't
             handle more complex actions in your own app. Also, in this way you
             may add your own `model` modifications here as well.
-            `Modal.Close` is also exposed, in case you want to clean up your
-            own model after the `Modal` closed
+            `H2ioModal.Close` is also exposed, in case you want to clean up your
+            own model after the `H2ioModal` closed
         --}
         Show ->
             let
                 modal' =
-                    Modal.update Modal.Show model.modal
+                    H2ioModal.update H2ioModal.Show model.modal
             in
                 { model | modal = modal' } ! []
 
-        ModalMsg msg' ->
+        H2ioModal msg' ->
             let
                 modal' =
-                    Modal.update msg' model.modal
+                    H2ioModal.update msg' model.modal
             in
                 { model | modal = modal' } ! []
 
@@ -67,7 +67,7 @@ update msg model =
 --}
 
 
-modalConfig : Modal.Model
+modalConfig : H2ioModal.Model
 modalConfig =
     { modalModel
         | content = content
@@ -83,12 +83,12 @@ model =
 
 
 
-{--Because the content will be passed down to the Modal, it has to have a
-    `Html Modal.Msg` type instead of an often used `Html Msg` type.
+{--Because the content will be passed down to the H2ioModal, it has to have a
+    `Html H2ioModal.Msg` type instead of an often used `Html Msg` type.
 --}
 
 
-content : Html Modal.Msg
+content : Html H2ioModal.Msg
 content =
     div []
         [ h1 [] [ text "Example Modal" ]
@@ -100,5 +100,5 @@ view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick Show ] [ text "Show Modal" ]
-        , Modal.view model.modal |> App.map ModalMsg
+        , H2ioModal.view model.modal |> App.map H2ioModal
         ]
