@@ -1,4 +1,18 @@
-module Modal exposing (Model, Msg(Show, Close), view, modalModel, update)
+module H2ioModal exposing (Model, Msg(Show, Close), view, modalModel, update)
+
+{-|
+A Modal UI component written in Elm
+
+# Usage
+H2ioModal exports a component written in The Elm Architecture, so you can easily
+start using it. It is recommended that you import it exposing `modalModel`,
+a default version of it's Model.
+
+## Boilerplate
+
+# Exposed Parts
+@docs Model, modalModel, Msg, update, view
+-}
 
 import Html exposing (div, button, Html)
 import Html.Attributes exposing (style)
@@ -7,6 +21,10 @@ import Html.App as App
 import Css exposing (..)
 
 
+{-|
+H2ioModal's Model is used to set inner content, size  and visibility. See
+`modalModel` for a usage example.
+-}
 type alias Model =
     { content : Html Msg
     , width : String
@@ -15,6 +33,27 @@ type alias Model =
     }
 
 
+{-|
+modalModel is an initial Model that get's exported for easier manipulation. You
+can see a commented implementation in the example folder. Basically, you import
+`modalModel`, destructure it and add your own elements to it, before setting it
+in the application's Model.
+
+    modalConfig : H2ioModal.Model
+    modalConfig =
+        { modalModel
+            | content = content --`content` has to have a `Html H2ioModal.Msg` type.
+            , width = "340px"
+            , height = "480px"
+        }
+
+
+    model : Model
+    model =
+        { modal = modalConfig
+        ,  ...
+        }
+-}
 modalModel : Model
 modalModel =
     { content = div [] []
@@ -29,12 +68,38 @@ init =
     modalModel ! []
 
 
+{-|
+Elm architecture Msg. Besides the generic `Msg` being exposed, `Show` and
+`Close` are directly available for you to use.
+
+The exposed `Show` is the recommended way of toggling the visibility of the H2ioModal.
+
+    update msg model =
+        case msg of
+            ...
+            Show ->
+                let
+                    modal' =
+                        H2ioModal.update H2ioModal.Show model.modal
+                in
+                    { model | modal = modal' } ! []
+
+    --in your view
+    button [ onClick Show ] [ text "Show Modal" ]
+
+
+The exposed `Close` can be used to manually clean up your model when the H2ioModal closes.
+-}
 type Msg
     = NoOp
     | Close
     | Show
 
 
+{-|
+Update functions for above Msg. Must be added in your own `update`. See
+**Boilerplate** section.
+-}
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -150,6 +215,9 @@ content model =
         ]
 
 
+{-|
+Elm architecture view. Use it with Html.App.Map in your application.
+-}
 view : Model -> Html Msg
 view model =
     if model.visible then
