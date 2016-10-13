@@ -1,24 +1,33 @@
-module H2ioModal exposing (Model, Msg(Show, Close), view, modalModel, update)
+module H2ioModal
+    exposing
+        ( Model
+        , ViewModel
+        , Msg
+        , view
+        , init
+        , update
+        , show
+        , close
+        )
 
 {-|
 A Modal UI component written in Elm
 
 # Usage
 H2ioModal exports a component written in The Elm Architecture, so you can easily
-start using it. It is recommended that you import it exposing `modalModel`,
-a default version of it's Model.
+start using it.
 
 ## Boilerplate
 
 # Exposed Parts
-@docs Model, modalModel, Msg, update, view
+@docs Model, ViewModel, show, close, view, init, Msg, update
+
 -}
 
 import Html exposing (div, button, Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
-import Html.App as App
-import Css exposing (..)
+import Styles exposing (..)
 
 
 {-|
@@ -26,69 +35,42 @@ H2ioModal's Model is used to set inner content, size  and visibility. See
 `modalModel` for a usage example.
 -}
 type alias Model =
-    { content : Html Msg
-    , width : String
-    , height : String
-    , visible : Bool
+    { visible : Bool
     }
 
 
 {-|
-modalModel is an initial Model that get's exported for easier manipulation. You
-can see a commented implementation in the example folder. Basically, you import
-`modalModel`, destructure it and add your own elements to it, before setting it
-in the application's Model.
+ViewModel is your modal's configuration. This will define the inside of the
+modal and the size. The inside view (`content`) can be as complex as you want it
+to be. The `ViewModel` will be given to the `view` function, see **view** for usage.
 
-    modalConfig : H2ioModal.Model
+    modalConfig : H2ioModal.ViewModel Msg
     modalConfig =
-        { modalModel
-            | content = content --`content` has to have a `Html H2ioModal.Msg` type.
-            , width = "340px"
-            , height = "480px"
-        }
-
-
-    model : Model
-    model =
-        { modal = modalConfig
-        ,  ...
+        { content = yourOwnContentHere
+        , width = "340px"
+        , height = "480px"
         }
 -}
-modalModel : Model
-modalModel =
-    { content = div [] []
-    , width = "300px"
-    , height = "300px"
-    , visible = False
+type alias ViewModel msg =
+    { content : Html msg
+    , width : String
+    , height : String
     }
 
 
-init : ( Model, Cmd Msg )
+{-|
+Default model values for `H2ioModal`. Must be added in your own `model`. See
+**Boilerplate** section.
+-}
+init : Model
 init =
-    modalModel ! []
+    { visible = False
+    }
 
 
 {-|
-Elm architecture Msg. Besides the generic `Msg` being exposed, `Show` and
-`Close` are directly available for you to use.
-
-The exposed `Show` is the recommended way of toggling the visibility of the H2ioModal.
-
-    update msg model =
-        case msg of
-            ...
-            Show ->
-                let
-                    modal' =
-                        H2ioModal.update H2ioModal.Show model.modal
-                in
-                    { model | modal = modal' } ! []
-
-    --in your view
-    button [ onClick Show ] [ text "Show Modal" ]
-
-
-The exposed `Close` can be used to manually clean up your model when the H2ioModal closes.
+Elm architecture Msg. **Used internally, use `show` & `close` helper functions
+instead of these.**
 -}
 type Msg
     = NoOp
@@ -107,84 +89,39 @@ update msg model =
             model
 
         Close ->
-            { model | visible = False }
+            close model
 
         Show ->
-            { model | visible = True }
+            show model
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+{-|
+   `show` is the recommended way of toggling the visibility of the H2ioModal.
+
+       update msg model =
+           case msg of
+               ...
+               Show ->
+                   { model | modal = H2ioModal.show model.modal } ! []
+
+    and in your view
+
+       button [ onClick Show ] [ text "Show Modal" ]
+-}
+show : Model -> Model
+show model =
+    { model | visible = True }
 
 
-styles : List Css.Mixin -> Html.Attribute Msg
-styles =
-    Css.asPairs >> style
+{-| `close` can be used to manually clean up your model when the H2ioModal closes.
+-}
+close : Model -> Model
+close model =
+    { model | visible = False }
 
 
-closeButtonStyle : List Css.Mixin
-closeButtonStyle =
-    [ all initial
-    , color (hex "bdc2c4")
-    , position absolute
-    , width (px 20)
-    , height (px 20)
-    , top (px 5)
-    , right (px 5)
-    , cursor pointer
-    , padding zero
-    , overflow hidden
-    , boxSizing borderBox
-    , before
-        [ lineHeight (px 22)
-        , fontSize (px 20)
-        , textAlign center
-        , marginLeft zero
-        , marginRight (px 32)
-        , paddingLeft (px 2)
-        ]
-    ]
-
-
-backgroundStyle : List Css.Mixin
-backgroundStyle =
-    [ all initial
-    , position fixed
-    , backgroundColor (rgba 0 0 0 0.8)
-    , top zero
-    , left zero
-    , width (pct 100)
-    , height (pct 100)
-    ]
-
-
-contentStyle : List Css.Mixin
-contentStyle =
-    [ all initial
-    , backgroundColor (hex "fff")
-    ]
-
-
-wrapperStyle : List Css.Mixin
-wrapperStyle =
-    [ all initial
-    , backgroundColor (hex "fff")
-    , display block
-    , position fixed
-    , top (pct 50)
-    , left (pct 50)
-    , padding (px 10)
-    ]
-
-
-background : Html Msg
-background =
-    div [ styles backgroundStyle ] []
-
-
-content : Model -> Html Msg
-content model =
+content : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
+content fwd viewModel model =
     div
         [ styles wrapperStyle
         , style
@@ -201,47 +138,34 @@ content model =
             , ( "background-repeat", "no-repeat" )
             , ( "transform", "translate(-50%, -50%)" )
             , ( "transition", "transform .3s cubic-bezier(0.4, 0, 0, 1.5)" )
-            , ( "width", model.width )
-            , ( "height", model.height )
+            , ( "width", viewModel.width )
+            , ( "height", viewModel.height )
             ]
         ]
         [ button
             [ styles closeButtonStyle
             , style [ ( "transition", ".2s ease color" ) ]
-            , onClick Close
+            , onClick (fwd Close)
             ]
             [ Html.text "✖" ]
-        , model.content
+        , viewModel.content
         ]
 
 
 {-|
-Elm architecture view. Use it with Html.App.Map in your application.
+Renders the modal with a given configuration. No need to use `Html.App.map`
+
+    div []
+        [ ...
+        , H2ioModal.view H2ioModal modalConfig model.modal
+        ]
 -}
-view : Model -> Html Msg
-view model =
+view : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
+view fwd viewModel model =
     if model.visible then
         div []
-            [ background
-            , content model
+            [ div [ styles backgroundStyle ] []
+            , content fwd viewModel model
             ]
     else
         div [] []
-
-
-main : Program Never
-main =
-    App.beginnerProgram
-        { model = modalModel
-        , view = view
-        , update = update
-        }
-
-
-
--- App.program
---     { init = init
---     , view = view
---     , update = update
---     , subscriptions = subscriptions
---     }
