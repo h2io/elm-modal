@@ -2,7 +2,7 @@ module H2ioModal
     exposing
         ( Model
         , ViewModel
-        , Msg
+        , Msg(Close)
         , view
         , init
         , update
