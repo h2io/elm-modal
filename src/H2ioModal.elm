@@ -125,26 +125,12 @@ content fwd viewModel model =
     div
         [ styles wrapperStyle
         , style
-            [ ( "zIndex", "2" )
-            , ( "background"
-              , """
-              linear-gradient(135deg, transparent 20px, #fff 0) top left,
-              linear-gradient(225deg, #fff 10px, #fff 0) top right,
-              linear-gradient(315deg, transparent 20px, #fff 0) bottom right,
-              linear-gradient(45deg,  #fff 10px, #fff 0) bottom left
-              """
-              )
-            , ( "background-size", "50%" )
-            , ( "background-repeat", "no-repeat" )
-            , ( "transform", "translate(-50%, -50%)" )
-            , ( "transition", "transform .3s cubic-bezier(0.4, 0, 0, 1.5)" )
-            , ( "width", viewModel.width )
+            [ ( "width", viewModel.width )
             , ( "height", viewModel.height )
             ]
         ]
         [ button
             [ styles closeButtonStyle
-            , style [ ( "transition", ".2s ease color" ) ]
             , onClick (fwd Close)
             ]
             [ Html.text "✖" ]

@@ -23,14 +23,13 @@ closeButtonStyle =
     , padding zero
     , overflow hidden
     , boxSizing borderBox
-    , before
-        [ lineHeight (px 22)
-        , fontSize (px 20)
-        , textAlign center
-        , marginLeft zero
-        , marginRight (px 32)
-        , paddingLeft (px 2)
-        ]
+    , property "transition" ".2s ease color"
+    ]
+
+
+closeButtonHoverStyle : List ( String, String )
+closeButtonHoverStyle =
+    [ ( "color", "#9aa0a3" )
     ]
 
 
@@ -62,4 +61,16 @@ wrapperStyle =
     , top (pct 50)
     , left (pct 50)
     , padding (px 10)
+    , property "z-index" "2"
+    , property "background"
+        """
+        linear-gradient(135deg, transparent 20px, #fff 0) top left,
+        linear-gradient(225deg, #fff 10px, #fff 0) top right,
+        linear-gradient(315deg, transparent 20px, #fff 0) bottom right,
+        linear-gradient(45deg,  #fff 10px, #fff 0) bottom left
+        """
+    , property "background-size" "50%"
+    , property "background-repeat" "no-repeat"
+    , property "transform" "translate(-50%, -50%)"
+    , property "transition" "transform .3s cubic-bezier(0.4, 0, 0, 1.5)"
     ]
