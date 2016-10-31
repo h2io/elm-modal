@@ -29,6 +29,7 @@ import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Styles exposing (..)
 import InlineHover exposing (hover)
+import Html.CssHelpers
 
 
 {-|
@@ -140,6 +141,29 @@ content fwd viewModel model =
         ]
 
 
+animations : String
+animations =
+    """
+    @keyframes fade {
+      from {
+          opacity:0;
+      }
+      to {
+          opacity:1;
+      }
+    }
+    @keyframes pop {
+      from {
+        transform: translate3d(-50%, 30%, 0);
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  """
+
+
 {-|
 Renders the modal with a given configuration. No need to use `Html.App.map`
 
@@ -152,7 +176,8 @@ view : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
 view fwd viewModel model =
     if model.visible then
         div []
-            [ div [ styles backgroundStyle ] []
+            [ Html.CssHelpers.style animations
+            , div [ styles backgroundStyle ] []
             , content fwd viewModel model
             ]
     else
