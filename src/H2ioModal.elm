@@ -28,6 +28,7 @@ import Html exposing (div, button, Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Styles exposing (..)
+import InlineHover exposing (hover)
 
 
 {-|
@@ -129,7 +130,8 @@ content fwd viewModel model =
             , ( "height", viewModel.height )
             ]
         ]
-        [ button
+        [ hover closeButtonHoverStyle
+            button
             [ styles closeButtonStyle
             , onClick (fwd Close)
             ]
