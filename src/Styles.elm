@@ -42,7 +42,7 @@ backgroundStyle =
     , left zero
     , width (pct 100)
     , height (pct 100)
-    , property "animation" "fade .2s"
+      -- , property "animation" "fade .2s"
     ]
 
 
@@ -73,6 +73,5 @@ wrapperStyle =
     , property "background-size" "50%"
     , property "background-repeat" "no-repeat"
     , property "transform" "translate(-50%, -50%)"
-    , property "animation" "pop .3s"
-    , property "animation-timing-function" "cubic-bezier(0.4, 0, 0, 1.5)"
+      -- , property "animation" "pop .3s cubic-bezier(0.4, 0, 0, 1.5)"
     ]

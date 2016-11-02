@@ -39,10 +39,18 @@ update msg model =
             model ! []
 
         Show ->
-            { model | modal = H2ioModal.show model.modal } ! []
+            let
+                ( modal, cmd ) =
+                    H2ioModal.show model.modal
+            in
+                { model | modal = modal } ! [ Cmd.map H2ioModal cmd ]
 
         H2ioModal msg' ->
-            { model | modal = H2ioModal.update msg' model.modal } ! []
+            let
+                ( modal, cmd ) =
+                    H2ioModal.update msg' model.modal
+            in
+                { model | modal = modal } ! [ Cmd.map H2ioModal cmd ]
 
 
 modalConfig : H2ioModal.ViewModel Msg
