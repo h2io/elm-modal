@@ -32,7 +32,7 @@ import InlineHover exposing (hover)
 import Html.CssHelpers
 import Time exposing (second, Time)
 import Task
-import Task.Extra exposing (delay)
+import Process
 
 
 {-|
@@ -124,6 +124,12 @@ update msg model =
             show model
 
 
+delay : Time -> Task.Task error value -> Task.Task error value
+delay time task =
+    Process.sleep time
+        |> Task.andThen (\_ -> task)
+
+
 {-|
    `show` is the recommended way of toggling the visibility of the H2ioModal.
 
@@ -152,13 +158,12 @@ close model =
 actualClose : Cmd Msg
 actualClose =
     delay (0.5 * second) (Task.succeed False)
-        |> Task.perform (\_ -> NoOp)
-            ActualClose
+        |> Task.perform ActualClose
 
 
 cleanUp : Cmd Msg
 cleanUp =
-    Task.perform (\_ -> NoOp)
+    Task.perform
         Animate
         (Task.succeed Clean)
 
@@ -166,8 +171,7 @@ cleanUp =
 cleanUpDelay : Cmd Msg
 cleanUpDelay =
     delay (0.5 * second) (Task.succeed Clean)
-        |> Task.perform (\_ -> NoOp)
-            Animate
+        |> Task.perform Animate
 
 
 animationFrom : Animations -> String
