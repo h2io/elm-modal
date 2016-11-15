@@ -2,13 +2,12 @@ module App exposing (..)
 
 import Html exposing (div, button, text, h1, p, Html)
 import Html.Events exposing (onClick)
-import Html.App as App
 import H2ioModal
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = model ! []
         , update = update
         , view = view
@@ -29,7 +28,7 @@ type alias Model =
 type Msg
     = NoOp
     | Show
-    | H2ioModal (H2ioModal.Msg)
+    | H2ioModal H2ioModal.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -45,10 +44,10 @@ update msg model =
             in
                 { model | modal = modal } ! [ Cmd.map H2ioModal cmd ]
 
-        H2ioModal msg' ->
+        H2ioModal msg_ ->
             let
                 ( modal, cmd ) =
-                    H2ioModal.update msg' model.modal
+                    H2ioModal.update msg_ model.modal
             in
                 { model | modal = modal } ! [ Cmd.map H2ioModal cmd ]
 
