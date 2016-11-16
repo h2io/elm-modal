@@ -45,7 +45,7 @@ backgroundStyle =
     , left zero
     , width (pct 100)
     , height (pct 100)
-      -- , property "animation" "fade .2s"
+    , property "z-index" "9999"
     ]
 
 
@@ -58,14 +58,14 @@ contentStyle =
 
 wrapperStyle : List Css.Mixin
 wrapperStyle =
-    [ all initial
+    [ property "all" "initial"
     , backgroundColor (hex "fff")
     , display block
     , position fixed
     , top (pct 50)
     , left (pct 50)
     , padding (px 10)
-    , property "z-index" "2"
+    , property "z-index" "99999"
     , property "background"
         """
         linear-gradient(135deg, transparent 20px, #fff 0) top left,
@@ -73,8 +73,8 @@ wrapperStyle =
         linear-gradient(315deg, transparent 20px, #fff 0) bottom right,
         linear-gradient(45deg,  #fff 10px, #fff 0) bottom left
         """
-    , property "background-size" "50%"
+    , property "background-size" "50% 50%"
     , property "background-repeat" "no-repeat"
     , property "transform" "translate(-50%, -50%)"
-      -- , property "animation" "pop .3s cubic-bezier(0.4, 0, 0, 1.5)"
+    , property "offset-inline-start" "50%"
     ]
