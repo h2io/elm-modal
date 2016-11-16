@@ -16,11 +16,14 @@ closeButtonStyle =
     , color (hex "bdc2c4")
     , position absolute
     , width (px 20)
+    , fontSize (px 20)
     , height (px 20)
+    , lineHeight (px 22)
     , top (px 5)
     , right (px 5)
     , cursor pointer
     , padding zero
+    , paddingLeft (px 2)
     , overflow hidden
     , boxSizing borderBox
     , property "transition" ".2s ease color"
