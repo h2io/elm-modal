@@ -46,6 +46,7 @@ backgroundStyle =
     , width (pct 100)
     , height (pct 100)
     , property "z-index" "9999"
+    , property "offset-inline-start" "0"
     ]
 
 
@@ -63,4 +64,5 @@ wrapperStyle =
     , ( "position", "fixed" )
     , ( "top", "50%" )
     , ( "left", "50%" )
+    , ( "offset-inline-start", "50%" )
     ]
