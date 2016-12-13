@@ -33,6 +33,7 @@ import Html.CssHelpers
 import Time exposing (second, Time)
 import Task
 import Process
+import H2ioUi
 
 
 {-|
@@ -201,17 +202,10 @@ animationStyle anim controller =
         [ ( "animation", control ) ]
 
 
-content : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
-content fwd viewModel model =
+contentView : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
+contentView fwd viewModel model =
     div
-        [ styles wrapperStyle
-        , style
-            ([ ( "width", viewModel.width )
-             , ( "height", viewModel.height )
-             ]
-                ++ (animationStyle Pop model.animate)
-            )
-        ]
+        []
         [ hover closeButtonHoverStyle
             button
             [ styles closeButtonStyle
@@ -220,6 +214,19 @@ content fwd viewModel model =
             [ Html.text "✖" ]
         , viewModel.content
         ]
+
+
+content : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
+content fwd viewModel model =
+    H2ioUi.box
+        ([ ( "width", viewModel.width )
+         , ( "height", viewModel.height )
+         ]
+            ++ wrapperStyle
+            ++ (animationStyle Pop model.animate)
+        )
+        False
+        (contentView fwd viewModel model)
 
 
 animations : String
