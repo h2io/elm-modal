@@ -27,6 +27,7 @@ closeButtonStyle =
     , overflow hidden
     , boxSizing borderBox
     , property "transition" ".2s ease color"
+    , property "z-index" "99"
     ]
 
 
