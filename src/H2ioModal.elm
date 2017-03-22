@@ -146,7 +146,10 @@ delay time task =
 -}
 show : Model -> ( Model, Cmd Msg )
 show model =
-    ({ model | visible = True, animate = Appear } ! [ cleanUpDelay ])
+    if model.visible then
+        model ! []
+    else
+        ({ model | visible = True, animate = Appear } ! [ cleanUpDelay ])
 
 
 {-| `close` can be used to manually clean up your model when the H2ioModal closes.
