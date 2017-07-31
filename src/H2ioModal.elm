@@ -28,9 +28,9 @@ import Html exposing (div, button, Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Styles exposing (..)
-import InlineHover exposing (hover)
 import Html.CssHelpers
 import Time exposing (second, Time)
+import Html.Styles exposing (..)
 import Task
 import Process
 import H2ioUi
@@ -209,9 +209,8 @@ contentView : (Msg -> msg) -> ViewModel msg -> Model -> Html msg
 contentView fwd viewModel model =
     div
         []
-        [ hover closeButtonHoverStyle
-            button
-            [ styles closeButtonStyle
+        [ button
+            [ styles closeButtonStyle [ pseudo ":hover" closeButtonHoverStyle ]
             , onClick (fwd Close)
             ]
             [ Html.text "✖" ]
@@ -269,7 +268,7 @@ view fwd viewModel model =
         div []
             [ Html.CssHelpers.style animations
             , div
-                [ styles backgroundStyle
+                [ styles backgroundStyle []
                 , style (animationStyle Fade model.animate)
                 ]
                 []

@@ -1,64 +1,59 @@
 module Styles exposing (..)
 
-import Css exposing (..)
-import Html
-import Html.Attributes exposing (style)
+
+type alias StandardCss =
+    List ( String, String )
 
 
-styles : List Css.Mixin -> Html.Attribute msg
-styles =
-    Css.asPairs >> style
-
-
-closeButtonStyle : List Css.Mixin
+closeButtonStyle : StandardCss
 closeButtonStyle =
-    [ all initial
-    , color (hex "bdc2c4")
-    , position absolute
-    , width (px 20)
-    , fontSize (px 20)
-    , height (px 20)
-    , lineHeight (px 22)
-    , top (px 5)
-    , right (px 5)
-    , cursor pointer
-    , padding zero
-    , paddingLeft (px 2)
-    , overflow hidden
-    , boxSizing borderBox
-    , property "transition" ".2s ease color"
-    , property "z-index" "99"
+    [ ( "all", "initial" )
+    , ( "color", "#bdc2c4" )
+    , ( "position", "absolute" )
+    , ( "width", "20px" )
+    , ( "font-size", "20px" )
+    , ( "height", "20px" )
+    , ( "line-height", "22px" )
+    , ( "top", "5px" )
+    , ( "right", "5px" )
+    , ( "cursor", "pointer" )
+    , ( "padding", "0" )
+    , ( "padding-left", "2px" )
+    , ( "overflow", "hidden" )
+    , ( "box-sizing", "border-box" )
+    , ( "transition", ".2s ease color" )
+    , ( "z-index", "99" )
     ]
 
 
-closeButtonHoverStyle : List ( String, String )
+closeButtonHoverStyle : StandardCss
 closeButtonHoverStyle =
     [ ( "color", "#9aa0a3" )
     ]
 
 
-backgroundStyle : List Css.Mixin
+backgroundStyle : StandardCss
 backgroundStyle =
-    [ all initial
-    , position fixed
-    , backgroundColor (rgba 0 0 0 0.8)
-    , top zero
-    , left zero
-    , width (pct 100)
-    , height (pct 100)
-    , property "z-index" "9999"
-    , property "offset-inline-start" "0"
+    [ ( "all", "initial" )
+    , ( "position", "fixed" )
+    , ( "background-color", "rgba(0, 0, 0, 0.8)" )
+    , ( "top", "0" )
+    , ( "left", "0" )
+    , ( "width", "100%" )
+    , ( "height", "100%" )
+    , ( "z-index", "9999" )
+    , ( "offset-inline-start", "0" )
     ]
 
 
-contentStyle : List Css.Mixin
+contentStyle : StandardCss
 contentStyle =
-    [ all initial
-    , backgroundColor (hex "fff")
+    [ ( "all", "initial" )
+    , ( "background-color", "#fff" )
     ]
 
 
-wrapperStyle : List ( String, String )
+wrapperStyle : StandardCss
 wrapperStyle =
     [ ( "z-index", "999999" )
     , ( "transform", "translate(-50%, -50%)" )
